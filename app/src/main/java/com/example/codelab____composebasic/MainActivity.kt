@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,12 +45,12 @@ private fun MyApp (modifier: Modifier = Modifier, ) {
 @Composable
 private fun Greetings (
     modifier: Modifier = Modifier,
-    names : List<String> = listOf("NewWorld", "OldWorld")
+    names : List<String> = List(1000) { "$it" }
 ) {
 
-    Column(modifier = modifier.padding(vertical = 4.dp)) {
+    LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
 
-        for (name in names) {
+        items(items = names) { name ->
             Greeting(name = name)
         }
     }
@@ -57,7 +60,7 @@ private fun Greetings (
 @Composable
 fun Greeting(name: String) {
 
-    val expanded = remember { mutableStateOf(false) }
+    val expanded = rememberSaveable { mutableStateOf(false) }
     val extraPadding = if (expanded.value) 48.dp else 0.dp
 
     androidx.compose.material3.Surface(
